@@ -24,8 +24,4 @@ export class CreateRecipeDto {
   @IsOptional()
   @IsInt()
   categoryId?: number;
-
-  // Temporário: na Fase 6 vem do utilizador autenticado (JWT)
-  @IsInt()
-  authorId: number;
 }
