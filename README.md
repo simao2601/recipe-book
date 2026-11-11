@@ -29,7 +29,7 @@ A web application where users share and discover cooking recipes. It solves the 
 
 ## Project board
 
-(link to be added)
+https://github.com/users/simao2601/projects/1
 
 ## Status
 
