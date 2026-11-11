@@ -7,18 +7,23 @@ import {
   ParseIntPipe,
   Patch,
   Post,
+  UseGuards,
 } from '@nestjs/common';
-import { RecipesService } from './recipes.service';
+import type { AuthUser } from '../auth/auth-user.interface';
+import { CurrentUser } from '../auth/current-user.decorator';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { CreateRecipeDto } from './dto/create-recipe.dto';
 import { UpdateRecipeDto } from './dto/update-recipe.dto';
+import { RecipesService } from './recipes.service';
 
 @Controller('api/recipes')
 export class RecipesController {
   constructor(private readonly recipesService: RecipesService) {}
 
+  @UseGuards(JwtAuthGuard)
   @Post()
-  create(@Body() dto: CreateRecipeDto) {
-    return this.recipesService.create(dto);
+  create(@Body() dto: CreateRecipeDto, @CurrentUser() user: AuthUser) {
+    return this.recipesService.create(dto, user.id);
   }
 
   @Get()
@@ -31,13 +36,22 @@ export class RecipesController {
     return this.recipesService.findOne(id);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Patch(':id')
-  update(@Param('id', ParseIntPipe) id: number, @Body() dto: UpdateRecipeDto) {
-    return this.recipesService.update(id, dto);
+  update(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() dto: UpdateRecipeDto,
+    @CurrentUser() user: AuthUser,
+  ) {
+    return this.recipesService.update(id, dto, user);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Delete(':id')
-  remove(@Param('id', ParseIntPipe) id: number) {
-    return this.recipesService.remove(id);
+  remove(
+    @Param('id', ParseIntPipe) id: number,
+    @CurrentUser() user: AuthUser,
+  ) {
+    return this.recipesService.remove(id, user);
   }
 }
