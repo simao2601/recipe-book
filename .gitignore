@@ -24,3 +24,8 @@ npm-debug.log*
 Thumbs.db
 .vscode/*
 !.vscode/extensions.json
+
+# Generated Prisma client
+apps/api/generated/
+
+*.tsbuildinfo
