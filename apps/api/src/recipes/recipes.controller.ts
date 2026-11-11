@@ -7,6 +7,7 @@ import {
   ParseIntPipe,
   Patch,
   Post,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 import type { AuthUser } from '../auth/auth-user.interface';
@@ -15,6 +16,7 @@ import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { CreateRecipeDto } from './dto/create-recipe.dto';
 import { UpdateRecipeDto } from './dto/update-recipe.dto';
 import { RecipesService } from './recipes.service';
+import { QueryRecipesDto } from './dto/query-recipes.dto';
 
 @Controller('api/recipes')
 export class RecipesController {
@@ -27,8 +29,8 @@ export class RecipesController {
   }
 
   @Get()
-  findAll() {
-    return this.recipesService.findAll();
+  findAll(@Query() query: QueryRecipesDto) {
+    return this.recipesService.findAll(query);
   }
 
   @Get(':id')
